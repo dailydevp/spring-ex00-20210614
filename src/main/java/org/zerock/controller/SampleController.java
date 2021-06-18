@@ -3,6 +3,7 @@ package org.zerock.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,6 +65,31 @@ public class SampleController {
 		log.info(""+dto);
 		
 		return "ex01";
+	}
+	
+//	,,,,,
+	/*
+	public ResponseEntity<String> ex07(){
+		log.info("/ex07......")
+		
+		String msg = "{\"name\": \"홍길동\"}";
+		
+		HttpHeaders header = new HttpHeaders();
+	}
+	*/
+	
+	@RequestMapping("/ex04")
+	public String ex04(SampleDTO dto, int page) {
+	
+		log.info("dto: " + dto);
+		log.info("page: " + page);
+		
+		return "/sample/ex04";
+	}
+	
+	@GetMapping("/ex05")
+	public void ex05() {
+		log.info("/ex05......");
 	}
 	
 	
