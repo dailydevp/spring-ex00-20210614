@@ -180,7 +180,7 @@
 	</script>
 	<h5>댓글 수정 form</h5>
 	<input id="input1" name="rno" value="9" readonly> <br>
-	<input id ="input2" name="bno" value="130" readonly>
+	<input id ="input2" name="bno" value="130" readonly> <br>
 	<input id="input3" name="reply" placeholder="댓글 입력"> <br>
 	<input id="input4" name="replyer" placeholder="작성자 입력"> <br>
 	

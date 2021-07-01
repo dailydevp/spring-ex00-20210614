@@ -31,7 +31,7 @@ public class ReplyController {
 		this.service = service;
 	}
 	*/
-	@PostMapping("/new")
+	@PostMapping("/new") //댓글 하나 넣기
 	public ResponseEntity<String> create(@RequestBody ReplyVO vo){
 		
 		int cnt = service.register(vo);
