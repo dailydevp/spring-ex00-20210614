@@ -53,7 +53,7 @@
 		b.regdate regdate,
 		b.updatedate updateDate,
 		count(r.rno) replyCnt
-    FROM tbl_board LEFT JOIN tbl_reply r ON b.bno = r.bno
+    FROM tbl_board b LEFT JOIN tbl_reply r ON b.bno = r.bno
 
 	<include refid="criteria"></include>
 	GROUP BY b.bno
@@ -78,15 +78,16 @@
     </insert>
   
   	<select id="read" resultType="org.zerock.domain.BoardVO">
-  		SELECT
-  		 bno bno,
-  		 title title,
-  		 content content,
-  		 writer writer,
-  		 regdate regdate,
-  		 updatedate updateDate
-  		FROM tbl_board
-  		WHERE bno = #{bno}
+  		 	SELECT 
+		  	 b.bno bno,
+		  	 b.title title,
+		  	 b.content content,
+		  	 b.writer writer,
+		  	 b.regdate regdate,
+		  	 b.updatedate updateDate,
+		  	 f.fileName fileName
+		  	FROM tbl_board b LEFT JOIN tbl_board_file f ON b.bno = f.bno
+		  	WHERE b.bno = #{bno}
   	</select>
   	
   	<delete id="delete">
