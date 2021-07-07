@@ -3,6 +3,7 @@ package org.zerock.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,6 +51,7 @@ public class BoardController {
 	}
 	
 	@PostMapping("/register")
+	@PreAuthorize("isAuthenticated()")
 	public String register(BoardVO board, 
 			@RequestParam("file") MultipartFile file,RedirectAttributes rttr) {
 		
@@ -84,6 +86,8 @@ public class BoardController {
 	}
 	
 	@PostMapping("/modify")
+	@PreAuthorize("principal.username == #board.writer") //720page
+//	@PreAuthorize("authication.name == # board.writer") .. spring.io
 	public String modify(BoardVO board, Criteria cri, 
 			@RequestParam("file") MultipartFile file, RedirectAttributes rttr) {
 		//request parameter 수집
@@ -108,8 +112,9 @@ public class BoardController {
 	}
 	
 	@PostMapping("/remove")
+	@PreAuthorize("principal.username == #writer") //720p
 	public String remove(@RequestParam("bno") Long bno, 
-			Criteria cri, RedirectAttributes rttr) {
+			Criteria cri, RedirectAttributes rttr, String writer) {
 		//parameter 수집
 		
 		//service 일
@@ -120,13 +125,17 @@ public class BoardController {
 			rttr.addFlashAttribute("messageTitle", "삭제 성공.");
 			rttr.addFlashAttribute("messageBody", "삭제 되었습니다.");
 		}
+		rttr.addAttribute("pageNum",cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
 		rttr.addAttribute("type", cri.getType());
 		rttr.addAttribute("keyword", cri.getKeyword());
+		
 		//forward  or redirect
 		return "redirect:/board/list";
 	}
 	
 	@GetMapping("/register")
+	@PreAuthorize("isAuthenticated()")
 	public void register(@ModelAttribute("cri") Criteria cri) {
 		// forward /WEB-INF/views/board/register.jsp
 		

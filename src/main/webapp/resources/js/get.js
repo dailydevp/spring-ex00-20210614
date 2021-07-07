@@ -10,6 +10,22 @@
 				$("#reply-rno-input2").val(reply.rno);
 				$("#reply-replyer-input2").val(reply.replyer);
 				$("#reply-reply-textarea2").text(reply.reply);
+
+        //댓글 작성자와 로그인 유저가 같지 않으면
+        //수정/삭제 버튼 삭제
+        if (userid != reply.replyer){
+          $("#reply-modify-modal")
+            .find("#reply-modify-delete-btn-wrapper")
+            .hide();
+
+            $("#reply-reply-textarea2").attr("readonly", "readonly");
+        } else {
+          $("#reply-modify-modal")
+            .find("reply-modify-delete-btn-wrapper")
+            .show();
+
+            $("#reply-reply-textarea2").removeAttr("readonly");
+        }
 				$("#reply-modify-modal").modal("show");
 			},
 			error : function() {
@@ -29,6 +45,10 @@
           <small>${new Date(reply.replyDate).toISOString().split("T")[0]}</small>
         </div>
       </li>`;
+      var replyComponent = $(replyHTML).click(function(){
+            showModifyModal($(this).attr("data-rno"));
+      });
+      container.append(replyComponent);
     }
 /*
 		for(var reply of list ) {
@@ -141,10 +161,19 @@
 		var check = confirm ("Do you want to delete?");
 
 		if(check) {
-			var rno = $("#reply-rno-input2").val();
+      var rno = $("#reply-rno-input2").val();
+      var replyer = $("#reply-replyer-input2").val();
+
+      var data = {
+          rno : rno,
+          replyer : replyer
+      }
+
 			$.ajax({
 				type : "delete",
 				url : appRoot + "/replies/" + rno,
+        data : JSON.stringify(data),
+        contentType : "application/json",
 				success : function(){
 					//modal 닫고
 					$("#reply-modify-modal").modal("hide");

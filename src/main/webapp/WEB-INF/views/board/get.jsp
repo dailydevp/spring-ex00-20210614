@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="bd" tagdir="/WEB-INF/tags/board" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 <html>
@@ -13,6 +14,7 @@
 <script>
 var appRoot = "${appRoot}";
 var boardBno = "${board.bno}";
+var userid = "${pinfo.member.userid}";
 </script>
 <script src = "${appRoot }/resources/js/get.js" ></script>
 
@@ -50,7 +52,8 @@ var boardBno = "${board.bno}";
 				
 				<div class="form-group">
 					<label for="input2">작성자</label>
-					<input readonly="readyonly" id="input2" class="form-control" name="writer" value="${board.writer}">
+					<input type="hidden" readonly="readyonly" id="input2" class="form-control" name="writer" value="${board.writer}">
+					<input readonly = "readonly" class="form-control" value="${board.writerName }">
 				</div>
 				
 				
@@ -61,8 +64,9 @@ var boardBno = "${board.bno}";
 					<c:param name="type" value="${cri.type }" />
 					<c:param name="keyword" value="${cri.keyword }" />
 				</c:url>
-				
-				<a class="btn btn-secondary" href="${modifyUrl }">수정/삭제</a>
+				<c:if test="${pinfo.member.userid eq board.writer }">
+					<a class="btn btn-secondary" href="${modifyUrl }">수정/삭제</a>
+				</c:if>
 			</form>
 		</div>
 	</div>
@@ -73,7 +77,10 @@ var boardBno = "${board.bno}";
 	<div class="row">
 		<div class="col-12">
 			<h3>댓글</h3>
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reply-insert-modal">댓글 작성</button>
+			
+			<sec:authorize access="isAuthenticated()">
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reply-insert-modal">댓글 작성</button>
+			</sec:authorize>
 			<ul class="list-unstyled" id ="reply-list-container">
 			
 			</ul>
@@ -139,8 +146,10 @@ var boardBno = "${board.bno}";
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button id="reply-modify-btn1" type="button" class="btn btn-primary">댓글 수정</button>
-        <button id="reply-delete-btn1" type="button" class="btn btn-danger">댓글 삭제</button>
+		<span id="reply-modify-delete-btn-wrapper">
+	        <button id="reply-modify-btn1" type="button" class="btn btn-primary">댓글 수정</button>
+	        <button id="reply-delete-btn1" type="button" class="btn btn-danger">댓글 삭제</button>
+		</span>
       </div>
     </div>
   </div>
