@@ -10,7 +10,6 @@ import org.zerock.mapper.BoardMapper;
 import org.zerock.mapper.FileMapper;
 import org.zerock.mapper.MemberMapper;
 import org.zerock.mapper.ReplyMapper;
-
 import lombok.Setter;
 
 @Service
@@ -55,6 +54,17 @@ public class MemberServiceImpl implements MemberService{
 	}
 	
 	@Override
+	public boolean modify(MemberVO vo, String oldPassword) {
+		MemberVO old = mapper.read(vo.getUserid());
+		
+		if(encoder.matches(oldPassword, old.getUserpw())) {
+			return modify(vo);
+		}
+		
+		return false;
+	}
+	
+	@Override
 	public boolean modify(MemberVO vo) {
 		
 		vo.setUserpw(encoder.encode(vo.getUserpw()));
@@ -64,6 +74,15 @@ public class MemberServiceImpl implements MemberService{
 		
 		return cnt == 1;
 	}
+	
+	@Override
+	public boolean remove(MemberVO vo, String oldPassword) {
+		MemberVO old = mapper.read(vo.getUserid());
+		if (encoder.matches(oldPassword, old.getUserpw())) {
+			return remove(vo);
+		}
+		return false;
+	}
 
 	@Override
 	@Transactional
@@ -71,6 +90,9 @@ public class MemberServiceImpl implements MemberService{
 		
 		//tbl_reply 삭제
 		replyMapper.removeByUserid(vo);
+		
+		// 본인 게시물의 다른 사람 댓글 삭제
+		replyMapper.removeByBnoByUserid(vo);
 		
 		// tbl_board_file 삭제
 		fileMapper.removeByUserid(vo);
