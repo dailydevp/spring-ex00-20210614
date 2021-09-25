@@ -62,6 +62,7 @@ $(function(){
 		passwordConfirm = false;
 		toggleEnableSubmit();
 		
+
 		if(pw1 != pw2) {
 //			submitBtn.attr("disabled", "disabled");
 			$("#password-message").text("패스워드가 일치하지 않습니다.");
@@ -69,7 +70,7 @@ $(function(){
 			if(pw1 == "") {
 //				submitBtn.attr("disabled", "disabled")
 				$("#password-message").text("패스워드를 입력해주세요.");
-			}else{
+		}else{
 //			submitBtn.removeAttr("disabled");		
 			passwordConfirm = true;
 			$("#password-message").empty();
@@ -86,6 +87,7 @@ $(function(){
 			$("#signup-btn1").attr("disabled","disabled");
 		}
 	}
+	
 })
 </script>
 </head>

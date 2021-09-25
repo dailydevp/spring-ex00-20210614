@@ -5,6 +5,7 @@
   
 <mapper namespace="org.zerock.mapper.MemberMapper">
 
+
 	<delete id="removeAuth">
 	DELETE FROM tbl_member_auth
 	WHERE userid = #{userid}
@@ -52,6 +53,7 @@
 		WHERE 
 			m.userid = #{userid}
 		
+		
 	</select>
 	
 	<!-- 662page -->
@@ -59,8 +61,6 @@
 		<id property="userid" column="userid" />
 		<result property="userpw" column="userpw"/>
 		<result property="userName" column="username"/>
-		<result property="regdate" column="regdate"/>
-		<result property="updateDate" column="updateDate"/>
 		<result property="enabled" column="enabled"/>
 		<collection property="authList" resultMap="authMap" />
 	</resultMap>

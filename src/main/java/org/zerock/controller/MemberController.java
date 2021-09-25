@@ -66,6 +66,8 @@ public class MemberController {
 			model.addAttribute("member", member);
 	}
 		
+		
+
 		@PostMapping("/modify")
 		@PreAuthorize("principal.username == #vo.userid")
 		public String modify(MemberVO vo, RedirectAttributes rttr,Authentication auth,String oldPassword) {

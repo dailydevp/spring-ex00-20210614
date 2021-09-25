@@ -95,7 +95,8 @@ $(function(){
 <bd:navbar/>
 <div class="container">
 	<c:if test="${param.status == 'success' }">
-		<div id="alert1" class="alert alert-primary" role="alert">
+ 		<div id="alert1" class="alert alert-primary" role="alert">
+ 
 			회원 정보를 수정하였습니다.
 		</div>
 	</c:if>
@@ -177,4 +178,4 @@ $(function(){
 	</div>
 </div>
 </body>
-</html>
+</html>ml>
